@@ -49,7 +49,8 @@ export async function listener(
   response: ServerResponse,
 ): Promise<void> {
   response.setHeader("GenieACS-Version", VERSION);
-
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  
   const origin = getRequestOrigin(request);
   const url = new URL(
     request.url,
