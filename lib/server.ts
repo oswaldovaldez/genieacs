@@ -89,6 +89,13 @@ export function start(
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers","Content-Type, Authorization, X-Requested-With");
 
+     // ✅ Preflight (OPTIONS)
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return; // <-- muy importante, no seguir a _listener
+    }
+    
     if (stopping) res.setHeader("Connection", "close");
     _listener(req, res).catch((err) => {
       try {
