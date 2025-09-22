@@ -48,6 +48,11 @@ export async function listener(
   request: IncomingMessage,
   response: ServerResponse,
 ): Promise<void> {
+	 console.log("=== Nueva petición NBI ===");
+  console.log("Método:", request.method);
+  console.log("URL:", request.url);
+  console.log("Headers:", request.headers);
+	
   response.setHeader("GenieACS-Version", VERSION);
   response.setHeader("Access-Control-Allow-Origin", "*");
 response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -55,6 +60,7 @@ response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
 //res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 response.setHeader("Access-Control-Allow-Headers", "*");
   if(request.method==="OPTIONS"){
+	    console.log("-> Respondiendo a preflight OPTIONS");
       response.writeHead(200);
 		response.end();
 		return;
@@ -65,9 +71,19 @@ response.setHeader("Access-Control-Allow-Headers", "*");
     (origin.encrypted ? "https://" : "http://") + origin.host,
   );
 
-  const body = await getBody(request).catch(() => null);
+	console.log("Origin calculado:", origin);
+	
+  const body = await getBody(request).catch(() => {
+console.error("Error leyendo body:", err);
+	  return null;
+  });
   // Ignore incomplete requests
-  if (body == null) return;
+	
+	
+  if (body == null) {
+	   console.warn("-> Body vacío o error, terminando request");
+	  return}
+};
 
   logger.accessInfo(
     Object.assign({}, Object.fromEntries(url.searchParams), {
@@ -75,6 +91,7 @@ response.setHeader("Access-Control-Allow-Headers", "*");
       message: `${request.method} ${url.pathname}`,
     }),
   );
+console.log("-> Pasando a handler");
   return handler(request, response, url, body);
 }
 
