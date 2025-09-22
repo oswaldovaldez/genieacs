@@ -83,7 +83,7 @@ console.error("Error leyendo body:", err);
   if (body == null) {
 	   console.warn("-> Body vacío o error, terminando request");
 	  return}
-};
+
 
   logger.accessInfo(
     Object.assign({}, Object.fromEntries(url.searchParams), {
