@@ -85,18 +85,16 @@ export function start(
   _listener: Promisify<http.RequestListener>,
 ): void {
   listener = (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // permite cualquier origen
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers","Content-Type, Authorization, X-Requested-With");
-
+  //res.setHeader("Access-Control-Allow-Origin", "*"); // permite cualquier origen
+  //res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  //res.setHeader("Access-Control-Allow-Headers","Content-Type, Authorization, X-Requested-With");
+res.setHeader("Access-Control-Allow-Origin", "*");
+res.setHeader("Access-Control-Allow-Credentials", "true");
+res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
      // ✅ Preflight (OPTIONS)
     if (req.method === "OPTIONS") {
-       res.writeHead(204, {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-        "Access-Control-Allow-Headers":
-          "Content-Type, Authorization, X-Requested-With",
-      });
+       res.writeHead(204);
       res.end();
       return; // <-- muy importante, no seguir a _listener
     }
