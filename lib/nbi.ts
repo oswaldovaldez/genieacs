@@ -50,14 +50,10 @@ export async function listener(
 ): Promise<void> {
   response.setHeader("GenieACS-Version", VERSION);
   response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,POST,PUT,DELETE,OPTIONS"
-  );
-  response.setHeader(
-     "Access-Control-Allow-Headers",
-     "Origin, X-Requested-With, Content-Type, Accept"
-   );
+response.setHeader("Access-Control-Allow-Credentials", "true");
+response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+response.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
   
   const origin = getRequestOrigin(request);
   const url = new URL(
@@ -86,6 +82,11 @@ async function handler(
 ): Promise<void> {
   if (PRESETS_REGEX.test(url.pathname)) {
     const presetName = decodeURIComponent(PRESETS_REGEX.exec(url.pathname)[1]);
+    if(request.method==="OPTIONS"){
+      response.writeHead(200);
+		response.end();
+		return;
+    }
     if (request.method === "PUT") {
       let preset;
       try {
