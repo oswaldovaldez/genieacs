@@ -96,7 +96,7 @@ res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
      // ✅ Preflight (OPTIONS)
     if (req.method === "OPTIONS") {
       console.log("OPTIONS");
-       res.writeHead(204);
+       res.writeHead(200);
       res.end();
       return; // <-- muy importante, no seguir a _listener
     }
