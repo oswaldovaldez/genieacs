@@ -91,9 +91,11 @@ export function start(
 res.setHeader("Access-Control-Allow-Origin", "*");
 res.setHeader("Access-Control-Allow-Credentials", "true");
 res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+//res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    res.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
      // ✅ Preflight (OPTIONS)
     if (req.method === "OPTIONS") {
+      console.log("OPTIONS");
        res.writeHead(204);
       res.end();
       return; // <-- muy importante, no seguir a _listener
