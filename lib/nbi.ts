@@ -53,8 +53,12 @@ export async function listener(
 response.setHeader("Access-Control-Allow-Credentials", "true");
 response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
 //res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-response.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
-  
+response.setHeader("Access-Control-Allow-Headers", "*");
+  if(request.method==="OPTIONS"){
+      response.writeHead(200);
+		response.end();
+		return;
+    }
   const origin = getRequestOrigin(request);
   const url = new URL(
     request.url,
@@ -82,11 +86,7 @@ async function handler(
 ): Promise<void> {
   if (PRESETS_REGEX.test(url.pathname)) {
     const presetName = decodeURIComponent(PRESETS_REGEX.exec(url.pathname)[1]);
-    if(request.method==="OPTIONS"){
-      response.writeHead(200);
-		response.end();
-		return;
-    }
+    
     if (request.method === "PUT") {
       let preset;
       try {
